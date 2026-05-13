@@ -12,6 +12,9 @@ $routes->get('/', 'Beranda::index');
 // Route halaman tentang 
 $routes->get('tentang', 'Beranda::tentang');
 
+// Route controller Demo
+$routes->get('demo', 'Demo::index');
+
 // Route dengan parameter numerik 
 $routes->get('pengguna/(:num)', 'Beranda::pengguna/$1');
 

@@ -42,4 +42,21 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
         // $this->session = service('session');
     }
+    /** 
+     * Mengirim response JSON (berguna untuk AJAX/API) 
+     */
+    protected function jsonResponse(array $data, int $statusCode = 200)
+    {
+        return $this->response
+            ->setStatusCode($statusCode)
+            ->setJSON($data);
+    }
+
+    /** 
+     * Cek apakah request adalah AJAX 
+     */
+    protected function isAjax(): bool
+    {
+        return $this->request->isAJAX();
+    }
 }
