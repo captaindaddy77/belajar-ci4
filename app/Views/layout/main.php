@@ -46,6 +46,13 @@
                         </a>
                     </li>
                     <li class='nav-item'>
+                        <a class='nav-link <?= str_contains(current_url(), '/kategori') ?
+                                                'active' : '' ?>'
+                            href='<?= base_url('kategori') ?>'>
+                            <i class='bi bi-tags'></i> Kategori
+                        </a>
+                    </li>
+                    <li class='nav-item'>
                         <a class='nav-link' href='<?= base_url('tentang') ?>'>
                             <i class='bi bi-info-circle'></i> Tentang
                         </a>
@@ -153,10 +160,6 @@
     <!-- END FOOTER -->
 
     <!-- Bootstrap 5 JS -->
-    <script
-        src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'>
-        < /
-        script >
-            <
-            /body>   < /
-        html >
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'></script>
+</body>
+</html>

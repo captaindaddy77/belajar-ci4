@@ -31,6 +31,14 @@ $routes->post('buku/update/(:num)', 'Buku::update/$1');
 $routes->get('buku/hapus/(:num)',   'Buku::hapus/$1');
 $routes->get('buku/ekspor',         'Buku::ekspor');
 
+// Route CRUD Kategori
+$routes->get('kategori',                'Kategori::index');
+$routes->get('kategori/tambah',         'Kategori::tambah');
+$routes->post('kategori/simpan',        'Kategori::simpan');
+$routes->get('kategori/edit/(:num)',    'Kategori::edit/$1');
+$routes->post('kategori/update/(:num)', 'Kategori::update/$1');
+$routes->get('kategori/hapus/(:num)',   'Kategori::hapus/$1');
+
 // Route Akademik
 $routes->get('akademik', 'Akademik::index');
 $routes->get('akademik/matkul', 'Akademik::matkul');
