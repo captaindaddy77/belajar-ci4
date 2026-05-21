@@ -85,20 +85,36 @@ class BukuModel extends Model
     }
 
     /** 
-     * Ambil statistik buku 
+     * Ambil statistik buku lengkap
      */
     public function getStatistik(): array
     {
         $db = \Config\Database::connect();
+
+        $total     = $this->countAll();
+        $totalStok = (int) $db->table('buku')->selectSum('stok')->get()->getRow()->stok;
+
         return [
-            'total'          => $this->countAll(),
-            'total_stok'     => (int)
-            $db->table('buku')->selectSum('stok')->get()->getRow()->stok,
-            'per_kategori'   => $db->table('buku')
-                ->select('kategori.nama, COUNT(buku.id) AS jumlah')
+            'total'         => $total,
+            'total_stok'    => $totalStok,
+            'rata_rata'     => $total > 0 ? round($totalStok / $total, 2) : 0,
+            'per_kategori'  => $db->table('buku')
+                ->select('COALESCE(kategori.nama, "(Tanpa Kategori)") AS nama_kategori, COUNT(buku.id) AS jumlah_buku, SUM(buku.stok) AS jumlah_stok')
                 ->join('kategori', 'kategori.id = buku.kategori_id', 'left')
                 ->groupBy('buku.kategori_id')
-                ->orderBy('jumlah', 'DESC')
+                ->orderBy('jumlah_buku', 'DESC')
+                ->get()->getResultArray(),
+            'stok_terbanyak' => $db->table('buku')
+                ->select('buku.judul, buku.kode_buku, buku.stok, COALESCE(kategori.nama, "-") AS nama_kategori')
+                ->join('kategori', 'kategori.id = buku.kategori_id', 'left')
+                ->orderBy('buku.stok', 'DESC')
+                ->limit(5)
+                ->get()->getResultArray(),
+            'perlu_restock'  => $db->table('buku')
+                ->select('buku.judul, buku.kode_buku, COALESCE(kategori.nama, "-") AS nama_kategori')
+                ->join('kategori', 'kategori.id = buku.kategori_id', 'left')
+                ->where('buku.stok', 0)
+                ->orderBy('buku.judul', 'ASC')
                 ->get()->getResultArray(),
         ];
     }

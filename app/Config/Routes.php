@@ -30,6 +30,7 @@ $routes->get('buku/edit/(:num)',    'Buku::edit/$1');
 $routes->post('buku/update/(:num)', 'Buku::update/$1');
 $routes->get('buku/hapus/(:num)',   'Buku::hapus/$1');
 $routes->get('buku/ekspor',         'Buku::ekspor');
+$routes->get('buku/statistik',      'Buku::statistik');
 
 // Route CRUD Kategori
 $routes->get('kategori',                'Kategori::index');
