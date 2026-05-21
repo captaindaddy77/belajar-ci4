@@ -30,3 +30,8 @@ $routes->get('buku/edit/(:num)',    'Buku::edit/$1');
 $routes->post('buku/update/(:num)', 'Buku::update/$1');
 $routes->get('buku/hapus/(:num)',   'Buku::hapus/$1');
 $routes->get('buku/ekspor',         'Buku::ekspor');
+
+// Route Akademik
+$routes->get('akademik', 'Akademik::index');
+$routes->get('akademik/matkul', 'Akademik::matkul');
+$routes->get('akademik/nilai/(:any)', 'Akademik::nilai/$1');
