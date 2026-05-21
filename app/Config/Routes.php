@@ -35,3 +35,6 @@ $routes->get('buku/ekspor',         'Buku::ekspor');
 $routes->get('akademik', 'Akademik::index');
 $routes->get('akademik/matkul', 'Akademik::matkul');
 $routes->get('akademik/nilai/(:any)', 'Akademik::nilai/$1');
+
+// Route Profil
+$routes->get('profil', 'Profil::index');
