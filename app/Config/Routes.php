@@ -73,4 +73,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     // Route Profil
     $routes->get('profil', 'Profil::index');
+
+    // Route Ganti Password
+    $routes->get('akun/ganti-password', 'Akun::gantiPassword');
+    $routes->post('akun/proses-ganti-password', 'Akun::prosesGantiPassword');
 });
