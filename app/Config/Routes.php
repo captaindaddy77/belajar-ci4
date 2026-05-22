@@ -67,8 +67,10 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
  
     // Area admin - hanya role admin
     $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
-        $routes->get('/',          'Admin\Dashboard::index'); 
-        $routes->get('pengguna',   'Admin\Pengguna::index');
+        $routes->get('/',                             'Admin\Dashboard::index'); 
+        $routes->get('pengguna',                      'Admin\Pengguna::index');
+        $routes->post('pengguna/toggle-aktif/(:num)', 'Admin\Pengguna::toggleAktif/$1');
+        $routes->post('pengguna/ubah-role/(:num)',    'Admin\Pengguna::ubahRole/$1');
     });
 
     // Route Profil
