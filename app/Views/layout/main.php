@@ -57,6 +57,20 @@
                             <i class='bi bi-tags'></i> Kategori
                         </a>
                     </li>
+                    <?php if (session()->get('role') === 'admin'): ?>
+                    <li class='nav-item'>
+                        <a class='nav-link <?= str_contains(current_url(), '/admin') && !str_contains(current_url(), '/pengguna') ? 'active' : '' ?>'
+                            href='<?= base_url('admin') ?>'>
+                            <i class='bi bi-speedometer2'></i> Dashboard
+                        </a>
+                    </li>
+                    <li class='nav-item'>
+                        <a class='nav-link <?= str_contains(current_url(), '/admin/pengguna') ? 'active' : '' ?>'
+                            href='<?= base_url('admin/pengguna') ?>'>
+                            <i class='bi bi-people'></i> Pengguna
+                        </a>
+                    </li>
+                    <?php endif; ?>
                     <li class='nav-item'>
                         <a class='nav-link' href='<?= base_url('tentang') ?>'>
                             <i class='bi bi-info-circle'></i> Tentang
