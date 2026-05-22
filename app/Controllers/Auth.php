@@ -18,12 +18,24 @@ class Auth extends BaseController
         if (session()->get('logged_in')) {
             return redirect()->to('/');
         }
+        
+        // Cek lock status dan pasang flashdata jika sedang dikunci
+        if (session()->getTempdata('login_locked')) {
+            session()->setFlashdata('error', 'Akun dikunci selama 10 menit akibat terlalu banyak percobaan login.');
+        }
+        
         return view('auth/login', ['title' => 'Masuk ke Sistem']);
     }
   
     /** Proses autentikasi dari form login. */
     public function prosesLogin()
     {
+        // Cek apakah session login sedang dikunci
+        if (session()->getTempdata('login_locked')) {
+            session()->setFlashdata('error', 'Akun dikunci selama 10 menit akibat terlalu banyak percobaan login.');
+            return redirect()->to('/login');
+        }
+
         $rules = [
             'identifier' => 'required|min_length[3]',
             'password'   => 'required|min_length[6]',
@@ -46,11 +58,30 @@ class Auth extends BaseController
             // Jika user tidak ada, tetap jalankan password_verify
             // untuk mencegah timing attack yang mengukur waktu respons
             if (!$user) password_verify($password, '$2y$12$dummy_hash_untuk_timing');
-            session()->setFlashdata('error', $pesanError);
+            
+            // Hitung percobaan gagal
+            $attempts = (int) session()->getTempdata('login_attempts') + 1;
+            
+            if ($attempts >= 5) {
+                // Kunci login selama 10 menit (600 detik)
+                session()->setTempdata('login_locked', true, 600);
+                session()->removeTempdata('login_attempts');
+                session()->setFlashdata('error', 'Akun dikunci selama 10 menit akibat terlalu banyak percobaan login.');
+            } else {
+                // Simpan jumlah percobaan gagal dengan TTL 10 menit (600 detik)
+                session()->setTempdata('login_attempts', $attempts, 600);
+                $sisa = 5 - $attempts;
+                session()->setFlashdata('error', $pesanError . " (Sisa percobaan: {$sisa})");
+            }
+            
             return redirect()->to('/login');
         }
  
-        // Login berhasil — simpan data ke session
+        // Login berhasil — reset hitungan rate limit
+        session()->removeTempdata('login_attempts');
+        session()->removeTempdata('login_locked');
+
+        // Simpan data ke session
         session()->set([
             'user_id'   => $user['id'],
             'username'  => $user['username'],
